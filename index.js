@@ -13,23 +13,17 @@ function isAllCaps(word) {
   return word === word.toUpperCase();
 }
 
-function splitWordAndEmoji(word) {
-  const match = word.match(/^([\p{L}\p{M}]+)(.*)$/u);
-  return match ? [match[1], match[2]] : [word, ''];
-}
-
 function replaceToGStyleWord(word) {
-  const [pureWord, suffix] = word.match(/^([\p{L}\p{M}]+)(.*)$/u) || [word, ''];
-
-  const isCaps = pureWord === pureWord.toUpperCase();
+  const isCaps = isAllCaps(word);
   const hard = 'БВГДЖЗКЛМНПРСТФХЦЧШЩ';
 
-  const transformed = pureWord
+  return word
     .split("")
     .map((char, i, arr) => {
       const upper = char.toUpperCase();
       const lower = char.toLowerCase();
 
+      // Обработка последнего символа
       if (i === arr.length - 1 && arr.length > 1) {
         if (hard.includes(upper)) {
           return char + (isCaps ? 'Ъ' : 'ъ');
@@ -40,8 +34,9 @@ function replaceToGStyleWord(word) {
         return isCaps ? upper : char;
       }
 
-      const prev = arr[i - 1];
+      const prev = arr[i - 1]
 
+      // Замена 'е' на 'ѣ'
       if (lower === 'е' && prev && hard.includes(prev.toUpperCase())) {
         return isCaps ? 'Ѣ' : 'ѣ';
       }
@@ -49,8 +44,6 @@ function replaceToGStyleWord(word) {
       return isCaps ? upper : char;
     })
     .join("");
-
-  return transformed + suffix;
 }
 
 function replaceToGStyle(ctx) {
