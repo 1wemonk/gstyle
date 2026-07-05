@@ -1,4 +1,10 @@
 const { Telegraf } = require('telegraf');
+const express = require('express');
+const app = express();
+
+app.get('/', (req, res) => res.send('ok'));
+
+app.listen(process.env.PORT || 3000);
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
