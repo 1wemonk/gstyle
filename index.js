@@ -24,8 +24,10 @@ function replaceToGStyleWord(word) {
         }
       }
 
+      const prev = arr[i - 1]
+
       // Замена 'е' на 'ѣ'
-      if (char.toLowerCase() === 'е') {
+      if (char.toLowerCase() === 'е' && hard.includes(prev.toUpperCase())) {
         return char === 'е' ? 'ѣ' : 'Ѣ';
       }
 
@@ -72,6 +74,10 @@ bot.on('inline_query', async (ctx) => {
     is_personal: true,
   });
 });
+
+bot.command('start', (ctx) => {
+  return ctx.reply('Отправъ сюда свою хуйню | я её замѣню🖤');
+})
 
 bot.on('text', async (ctx) => {
   const q = (ctx.message.text || '').trim();
