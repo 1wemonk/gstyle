@@ -26,7 +26,7 @@ function replaceToGStyleWord(word) {
       // Обработка последнего символа
       if (i === arr.length - 1 && arr.length > 1) {
         if (hard.includes(upper)) {
-          return char + isCaps ? 'Ъ' : 'ъ';
+          return char + (isCaps ? 'Ъ' : 'ъ');
         }
         if (lower === 'ь') {
           return isCaps ? 'Ъ' : 'ъ';
@@ -37,9 +37,7 @@ function replaceToGStyleWord(word) {
       const prev = arr[i - 1]
 
       // Замена 'е' на 'ѣ'
-      if (!prev) return char;
-
-      if (lower === 'е' && hard.includes(prev?.toUpperCase())) {
+      if (lower === 'е' && prev && hard.includes(prev.toUpperCase())) {
         return isCaps ? 'Ѣ' : 'ѣ';
       }
 
