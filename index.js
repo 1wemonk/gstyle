@@ -22,7 +22,6 @@ function replaceToGStyleWord(word) {
         if (char.toLowerCase() === 'ь') {
           return 'ъ';
         }
-        return char;
       }
 
       // Замена 'е' на 'ѣ'
@@ -52,8 +51,8 @@ bot.on('inline_query', async (ctx) => {
     return ctx.answerInlineQuery([]);
   }
 
-  console.log('LEN:', replaceToGStyle(q).length);
-  console.log('TEXT:', replaceToGStyle(q));
+  // console.log('LEN:', replaceToGStyle(q).length);
+  // console.log('TEXT:', replaceToGStyle(q));
 
   const result = [
     {
@@ -72,6 +71,14 @@ bot.on('inline_query', async (ctx) => {
     cache_time: 0,
     is_personal: true,
   });
+});
+
+bot.on('text', async (ctx) => {
+  const q = (ctx.message.text || '').trim();
+
+  const transformed = replaceToGStyle(q);
+
+  return ctx.reply(transformed);
 });
 
 bot.launch();
