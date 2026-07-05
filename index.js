@@ -52,14 +52,23 @@ bot.on('inline_query', async (ctx) => {
     return ctx.answerInlineQuery([]);
   }
 
+  console.log('LEN:', replaceToGStyle(q).length);
+  console.log('TEXT:', replaceToGStyle(q));
+
   const result = [
     {
       type: 'article',
       id: `${Date.now()}_${Math.random()}`,
       title: 'Сделай G Style',
       description: 'запятая с пробѣлом = | ',
+      // input_message_content: {
+      //   message_text: replaceToGStyle(q),
+      // }
       input_message_content: {
-        message_text: replaceToGStyle(q),
+        message_text: JSON.stringify({
+          len: replaceToGStyle(q).length,
+          text: replaceToGStyle(q)
+        })
       }
     },
   ];
