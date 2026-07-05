@@ -30,7 +30,7 @@ function replaceToGStyleWord(word) {
       // Замена 'е' на 'ѣ'
       if (!prev) return char;
 
-      if (hard.includes(prev?.toUpperCase())) {
+      if (char.toLowerCase() === 'е' && hard.includes(prev?.toUpperCase())) {
         return char === 'е' ? 'ѣ' : 'Ѣ';
       }
 
