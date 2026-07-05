@@ -60,15 +60,10 @@ bot.on('inline_query', async (ctx) => {
       type: 'article',
       id: `${Date.now()}_${Math.random()}`,
       title: 'Сделай G Style',
-      description: 'запятая с пробѣлом = | ',
-      // input_message_content: {
-      //   message_text: replaceToGStyle(q),
-      // }
+      description: 'ТГ на программном уровне обрезает сообщения, так что' +
+        ' получится написать макс 30-40 слов =(\nзапятая с пробѣлом = | ',
       input_message_content: {
-        message_text: JSON.stringify({
-          len: replaceToGStyle(q).length,
-          text: replaceToGStyle(q)
-        })
+        message_text: replaceToGStyle(q),
       }
     },
   ];
