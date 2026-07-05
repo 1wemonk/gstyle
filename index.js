@@ -9,20 +9,29 @@ app.listen(process.env.PORT || 3000);
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
+function isAllCaps(word) {
+  return word === word.toUpperCase();
+}
+
 function replaceToGStyleWord(word) {
+  const isCaps = isAllCaps(word);
   const hard = 'БВГДЖЗКЛМНПРСТФХЦЧШЩ';
 
   return word
     .split("")
     .map((char, i, arr) => {
+      const upper = char.toUpperCase();
+      const lower = char.toLowerCase();
+
       // Обработка последнего символа
       if (i === arr.length - 1) {
-        if (hard.includes(char.toUpperCase())) {
-          return char + 'ъ';
+        if (hard.includes(upper)) {
+          return isCaps ? 'Ъ' : 'ъ';
         }
-        if (char.toLowerCase() === 'ь') {
-          return 'ъ';
+        if (lower === 'ь') {
+          return isCaps ? 'Ъ' : 'ъ';
         }
+        return isCaps ? upper : char;
       }
 
       const prev = arr[i - 1]
@@ -30,11 +39,11 @@ function replaceToGStyleWord(word) {
       // Замена 'е' на 'ѣ'
       if (!prev) return char;
 
-      if (char.toLowerCase() === 'е' && hard.includes(prev?.toUpperCase())) {
-        return char === 'е' ? 'ѣ' : 'Ѣ';
+      if (lower === 'е' && hard.includes(prev?.toUpperCase())) {
+        return isCaps ? 'Ѣ' : 'ѣ';
       }
 
-      return char;
+      return isCaps ? upper : char;
     })
     .join("");
 }
