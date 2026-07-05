@@ -1,5 +1,6 @@
 const { Telegraf } = require('telegraf');
 const express = require('express');
+const {pre} = require('telegraf/format')
 const app = express();
 
 app.get('/', (req, res) => res.send('ok'));
@@ -27,7 +28,9 @@ function replaceToGStyleWord(word) {
       const prev = arr[i - 1]
 
       // Замена 'е' на 'ѣ'
-      if (char.toLowerCase() === 'е' && hard.includes(prev.toUpperCase())) {
+      if (!prev) return char;
+
+      if (hard.includes(prev?.toUpperCase())) {
         return char === 'е' ? 'ѣ' : 'Ѣ';
       }
 
