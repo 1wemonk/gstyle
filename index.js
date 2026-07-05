@@ -24,9 +24,9 @@ function replaceToGStyleWord(word) {
       const lower = char.toLowerCase();
 
       // Обработка последнего символа
-      if (i === arr.length - 1) {
+      if (i === arr.length - 1 && arr.length > 1) {
         if (hard.includes(upper)) {
-          return isCaps ? 'Ъ' : 'ъ';
+          return char + isCaps ? 'Ъ' : 'ъ';
         }
         if (lower === 'ь') {
           return isCaps ? 'Ъ' : 'ъ';
