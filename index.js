@@ -36,17 +36,12 @@ function replaceToGStyleWord(word) {
 }
 
 function replaceToGStyle(ctx) {
-  let result = ctx;
-
-  // заменяем запятую с пробелом
-  result = result.replace(/,\s+/g, ' | ');
-
-  // нормализуем пробелы
-  result = result.replace(/\s+/g, ' ').trim();
-
-  return result
-    .split(' ')
-    .map(word => replaceToGStyleWord(word))
+  return ctx
+    .replace(/,\s+/g, ' | ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .split(/\s+/)
+    .map(replaceToGStyleWord)
     .join(' ');
 }
 
@@ -58,33 +53,15 @@ bot.on('inline_query', async (ctx) => {
   }
 
   const result = [
-    // {
-    //   type: 'article',
-    //   id: '1',
-    //   title: 'Send original',
-    //   description: q,
-    //   input_message_content: {
-    //     message_text: q
-    //   }
-    // },
     {
       type: 'article',
       id: `${Date.now()}_${Math.random()}`,
       title: 'Сделай G Style',
-      description: 'запятая с пробѣлом = | \n' + replaceToGStyle(q),
+      description: 'запятая с пробѣлом = | ',
       input_message_content: {
         message_text: replaceToGStyle(q),
       }
     },
-    // {
-    //   type: 'article',
-    //   id: `${Date.now()}_${Math.random()}`,
-    //   title: 'МЕняю',
-    //   description: '',
-    //   input_message_content: {
-    //     message_text: replaceToHard(q)
-    //   }
-    // }
   ];
 
   return ctx.answerInlineQuery(result, {
