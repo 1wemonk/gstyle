@@ -152,16 +152,24 @@ bot.command('start', (ctx) => {
 })
 
 bot.command('flag', async (ctx) => {
-  return ctx.reply(formatTextJDFLAG(ctx.message.text)?.trim());
+  const text = ctx.message.text.replace(/^\/flag(?:@\w+)?\s*/i, '');
+
+  return ctx.reply(formatTextJDFLAG(text)?.trim());
 });
 
 bot.command('gene', async (ctx) => {
-  return ctx.reply(replaceToGStyle(ctx.message.text)?.trim());
+  const text = ctx.message.text.replace(/^\/gene(?:@\w+)?\s*/i, '');
+
+  return ctx.reply(replaceToGStyle(text)?.trim());
 });
 
-bot.on('text', async () => {
-  return 'тепѣръ в боте естъ и FLAG, tаk чtо vыбиrай че хочешь чеrеz /flag' +
-    ' tеkst иlи /gene тѣкстъ'
+bot.on('text', async (ctx) => {
+  const q = (ctx.message.text || '').trim();
+
+  const transformed = replaceToGStyle(q);
+
+  return ctx.reply('тепѣръ в боте естъ и FLAG, tаk чtо vыбиrай че хочешь чеrеz /flag' +
+    ' tеkst иlи /gene тѣкстъ');
 });
 
 bot.launch();
