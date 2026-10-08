@@ -164,10 +164,6 @@ bot.command('gene', async (ctx) => {
 });
 
 bot.on('text', async (ctx) => {
-  const q = (ctx.message.text || '').trim();
-
-  const transformed = replaceToGStyle(q);
-
   return ctx.reply('тепѣръ в боте естъ и FLAG, tаk чtо vыбиrай че хочешь чеrеz /flag' +
     ' tеkst иlи /gene тѣкстъ');
 });
