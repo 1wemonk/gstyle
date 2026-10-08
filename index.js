@@ -12,7 +12,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 function isAllCaps(word) {
   return word === word.toUpperCase();
 }
-
+// GENE
 function replaceToGStyleWord(word) {
   const isCaps = isAllCaps(word);
   const hard = 'БВГДЖЗКЛМНПРСТФХЦЧШЩ';
@@ -56,6 +56,61 @@ function replaceToGStyle(ctx) {
     .join(' ');
 }
 
+// JDFLAG
+const REPLACEMENTS = {
+  'в': 'v',
+  'г': 'g',
+  'д': 'd',
+  'з': 'z',
+  'к': 'k',
+  'л': 'l',
+  'м': 'm',
+  'н': 'n',
+  'п': 'p',
+  'р': 'r',
+  'с': 's',
+  'т': 't',
+  'ф': 'f'
+};
+
+function formatWord(word) {
+  function process(index, acc) {
+    if (index >= word.length) return acc;
+
+    const char = word[index];
+    const lower = char.toLowerCase();
+    const replacement = REPLACEMENTS[lower];
+
+    let nextChar;
+    if (replacement) {
+      nextChar = char === lower
+        ? replacement
+        : replacement.toUpperCase();
+    } else {
+      nextChar = char;
+    }
+
+    return process(index + 1, acc + nextChar);
+  }
+
+  return process(0, '');
+}
+
+function formatTextJDFLAG(text) {
+  function processWords(words, index, acc) {
+    if (index >= words.length) return acc.join('');
+
+    const token = words[index];
+    const formatted = /\s/.test(token) ? token : formatWord(token);
+    acc.push(formatted);
+
+    return processWords(words, index + 1, acc);
+  }
+
+  const tokens = text.split(/(\s+)/);
+  return processWords(tokens, 0, []);
+}
+
 bot.on('inline_query', async (ctx) => {
   const q = (ctx.inlineQuery.query || '').trim();
 
@@ -71,10 +126,18 @@ bot.on('inline_query', async (ctx) => {
       type: 'article',
       id: `${Date.now()}_${Math.random()}`,
       title: 'Сделай G Style',
-      description: 'ТГ обрѣзаѣтъ сообщѣния | такъ что получится написатъ' +
-        ' максъ 30-40 словъ =(. запятая с пробѣлом = |',
+      description: 'ТГ обрѣзаѣтъ сообщѣния | такъ что получится' +
+        ' максъ 30-40 словъ. запятая с пробѣлом = |',
       input_message_content: {
         message_text: replaceToGStyle(q),
+      }
+    },
+    {
+      type: 'article',
+      id: `${Date.now()}_${Math.random()}`,
+      title: 'SDELAЙ ЭТУ ХУЙNЮ',
+      input_message_content: {
+        message_text: formatTextJDFLAG(q),
       }
     },
   ];
