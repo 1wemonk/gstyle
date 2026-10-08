@@ -1,6 +1,5 @@
 const { Telegraf } = require('telegraf');
 const express = require('express');
-const {pre} = require('telegraf/format')
 const app = express();
 
 app.get('/', (req, res) => res.send('ok'));
@@ -66,7 +65,6 @@ const REPLACEMENTS = {
   'л': 'l',
   'м': 'm',
   'н': 'n',
-  'п': 'p',
   'р': 'r',
   'с': 's',
   'т': 't',
@@ -136,6 +134,7 @@ bot.on('inline_query', async (ctx) => {
       type: 'article',
       id: `${Date.now()}_${Math.random()}`,
       title: 'SDELAЙ ЭТУ ХУЙNЮ',
+      description: 'TЕKST V STИLЕ FLАGА',
       input_message_content: {
         message_text: formatTextJDFLAG(q),
       }
@@ -152,12 +151,17 @@ bot.command('start', (ctx) => {
   return ctx.reply('Отправъ сюда свою хуйню | я её замѣню🖤');
 })
 
-bot.on('text', async (ctx) => {
-  const q = (ctx.message.text || '').trim();
+bot.command('flag', async (ctx) => {
+  return ctx.reply(formatTextJDFLAG(ctx.message.text)?.trim());
+});
 
-  const transformed = replaceToGStyle(q);
+bot.command('gene', async (ctx) => {
+  return ctx.reply(replaceToGStyle(ctx.message.text)?.trim());
+});
 
-  return ctx.reply(transformed);
+bot.on('text', async () => {
+  return 'тепѣръ в боте естъ и FLAG, tаk чtо vыбиrай че хочешь чеrеz /flag' +
+    ' tеkst иlи /gene тѣкстъ'
 });
 
 bot.launch();
